@@ -4,6 +4,7 @@
   "description": "Nuxt.js project",
   "author": "kazukinakamuraKN <kajirikajiri@gmail.com>",
   "private": true,
+  "heroku-postbuild": "npm run build",
   "scripts": {
     "dev": "HOST=0.0.0.0 nuxt",
     "build": "nuxt build",
