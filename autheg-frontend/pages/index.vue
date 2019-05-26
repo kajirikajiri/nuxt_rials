@@ -1,33 +1,34 @@
-<template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        autheg-frontend
-      </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+<template v-if="$auth.$state.loggedIn">
+  <v-layout>
+    <v-flex>
+      <v-list>
+        <v-list-tile v-for="example in examples" :key="example.id" :class="example.colour">
+          <v-list-tile-content>{{example.name}}</v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
 
 export default {
-  components: {
-    AppLogo
+  data () {
+    return {
+      examples: []
+    }
+  },
+  methods: {
+    async update_examples() {
+      this.examples = await this.$axios.$get('/examples')
+    },
+    auth_judgement () {
+      this.$auth.$state.loggedIn ? this.update_examples() : this.$router.push({path: 'login'})
+    }
+  },
+  mounted () {
+    this.auth_judgement()
   }
 }
 </script>
